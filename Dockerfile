@@ -22,10 +22,6 @@ RUN mkdir ${config_dir}
 
 COPY config.txt ${config_dir}
 
-VOLUME /mnt
-
-WORKDIR /mnt
-
 ENTRYPOINT ["/usr/local/bin/xmr-stak", "--config", "/etc/xmr-stak/config.txt"]
 
 EXPOSE 38888
