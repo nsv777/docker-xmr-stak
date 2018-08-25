@@ -6,14 +6,15 @@ ENV GIT_REPOSITORY https://github.com/fireice-uk/xmr-stak.git
 ENV XMRSTAK_CMAKE_FLAGS -DCUDA_ENABLE=OFF -DOpenCL_ENABLE=OFF
 ENV config_dir /etc/xmr-stak
 
-RUN echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories \
-    && apk --no-cache add cmake openssl openssl-dev git libmicrohttpd libmicrohttpd-dev build-base libstdc++ libgcc hwloc@testing hwloc-dev@testing \
+RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories \
+    && apk --update --no-cache add openssl libmicrohttpd libstdc++ libgcc hwloc@testing \
+    && apk --update --no-cache add --virtual build-dependencies cmake openssl-dev git libmicrohttpd-dev build-base hwloc-dev@testing \
     && git clone $GIT_REPOSITORY \
     && cd /xmr-stak \
     && sed -i -e 's/fDevDonationLevel = 2.0/fDevDonationLevel = 0.0/' xmrstak/donate-level.hpp \
     && cmake ${XMRSTAK_CMAKE_FLAGS} . \
     && make \
-    && apk del cmake openssl-dev git libmicrohttpd-dev build-base hwloc-dev \
+    && apk del build-dependencies \
     && mv /xmr-stak/bin/* /usr/local/bin/ \
     && rm -rf /xmr-stak
 
