@@ -7,14 +7,14 @@ ENV XMRSTAK_CMAKE_FLAGS -DCUDA_ENABLE=OFF -DOpenCL_ENABLE=OFF
 ENV config_dir /etc/xmr-stak
 
 RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories \
-    && apk --update --no-cache add openssl libmicrohttpd libstdc++ libgcc hwloc@testing \
-    && apk --update --no-cache add --virtual build-dependencies cmake openssl-dev git libmicrohttpd-dev build-base hwloc-dev@testing \
+    && apk --no-cache add openssl libmicrohttpd libstdc++ libgcc hwloc@testing \
+    && apk --no-cache add cmake openssl-dev git libmicrohttpd-dev build-base hwloc-dev@testing \
     && git clone $GIT_REPOSITORY \
     && cd /xmr-stak \
     && sed -i -e 's/fDevDonationLevel = 2.0/fDevDonationLevel = 0.0/' xmrstak/donate-level.hpp \
     && cmake ${XMRSTAK_CMAKE_FLAGS} . \
     && make \
-    && apk del build-dependencies \
+    && apk del cmake openssl-dev git libmicrohttpd-dev build-base hwloc-dev@testing \
     && mv /xmr-stak/bin/* /usr/local/bin/ \
     && rm -rf /xmr-stak
 
