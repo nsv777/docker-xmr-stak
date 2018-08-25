@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  xmr-stak-cpuonly:
+    image: nsv777/xmr-stak-cpuonly
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    configs:
+      - source: pools
+        target: /etc/xmr-stak/pools.txt
+
+configs:
+  pools:
+    file: /home/docker/data/xmr-stak-cpuonly/pools.txt
