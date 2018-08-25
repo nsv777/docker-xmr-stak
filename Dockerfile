@@ -7,8 +7,7 @@ ENV XMRSTAK_CMAKE_FLAGS -DCUDA_ENABLE=OFF -DOpenCL_ENABLE=OFF
 ENV config_dir /etc/xmr-stak
 
 RUN echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories \
-    && apk update \
-    && apk add cmake openssl openssl-dev git libmicrohttpd libmicrohttpd-dev build-base libstdc++ libgcc hwloc@testing hwloc-dev@testing \
+    && apk --no-cache add cmake openssl openssl-dev git libmicrohttpd libmicrohttpd-dev build-base libstdc++ libgcc hwloc@testing hwloc-dev@testing \
     && git clone $GIT_REPOSITORY \
     && cd /xmr-stak \
     && sed -i -e 's/fDevDonationLevel = 2.0/fDevDonationLevel = 0.0/' xmrstak/donate-level.hpp \
@@ -21,7 +20,6 @@ RUN echo '@testing http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/re
 RUN mkdir ${config_dir}
 
 COPY config.txt ${config_dir}
-COPY pools.txt ${config_dir}
 
 ENTRYPOINT ["/usr/local/bin/xmr-stak", "--config", "/etc/xmr-stak/config.txt", "--poolconf", "/etc/xmr-stak/pools.txt"]
 
