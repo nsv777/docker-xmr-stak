@@ -14,7 +14,7 @@ RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/ap
     && sed -i -e 's/fDevDonationLevel = 2.0/fDevDonationLevel = 0.0/' xmrstak/donate-level.hpp \
     && cmake ${XMRSTAK_CMAKE_FLAGS} . \
     && make \
-    && apk del cmake openssl-dev git libmicrohttpd-dev build-base hwloc-dev@testing \
+    && apk del cmake openssl-dev git libmicrohttpd-dev build-base hwloc-dev \
     && mv /xmr-stak/bin/* /usr/local/bin/ \
     && rm -rf /xmr-stak
 
